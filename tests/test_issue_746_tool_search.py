@@ -399,7 +399,10 @@ def test_workflow_remains_resident_when_override_omits_it(
         {"name": "Workflow", "description": "workflow", "input_schema": {}},
         {"name": "ToolSearch", "description": "search", "input_schema": {}},
         {"name": "Grep", "description": "grep", "input_schema": {}},
-        *[{"name": f"mcp__slack__t{i}", "description": "mcp", "input_schema": {}} for i in range(10)],
+        *[
+            {"name": f"mcp__slack__t{i}", "description": "mcp", "input_schema": {}}
+            for i in range(10)
+        ],
     ]
     out = inject_tool_search_deferral(tools)
     by_name = {t.get("name"): t for t in out if isinstance(t, dict) and "name" in t}
@@ -407,9 +410,7 @@ def test_workflow_remains_resident_when_override_omits_it(
     assert by_name["Workflow"].get("defer_loading") is None, (
         "Workflow was deferred under override but must remain resident (#4313)"
     )
-    assert by_name["ToolSearch"].get("defer_loading") is None, (
-        "ToolSearch must survive overrides"
-    )
+    assert by_name["ToolSearch"].get("defer_loading") is None, "ToolSearch must survive overrides"
     # Configured core tools remain resident
     assert by_name["Bash"].get("defer_loading") is None
     assert by_name["Read"].get("defer_loading") is None

@@ -637,7 +637,9 @@ def test_the_override_tolerates_spaces_after_commas(monkeypatch: pytest.MonkeyPa
     """
     monkeypatch.setenv("HEADROOM_TOOL_SEARCH_CORE_TOOLS", "bash, read , terminal")
 
-    assert resolved_core_tools() == frozenset({"bash", "read", "terminal", "toolsearch", "workflow"})
+    assert resolved_core_tools() == frozenset(
+        {"bash", "read", "terminal", "toolsearch", "workflow"}
+    )
 
 
 def test_an_override_cannot_defer_the_clients_search_tool(
